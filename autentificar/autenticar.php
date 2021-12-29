@@ -1,24 +1,12 @@
 <?php
-    require '../config.php';
-    require '../src/redireciona.php';
-    require './Autentifica.php';
-
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        $aut = new Autentifica($mysql);
-        if($aut->autentificar($_POST['login'], $_POST['senha']))
-            redireciona('../admin/index.php');
-        else 
-        {
-            echo json_encode('Senha-incorreta! Tente novamente.');
-            redireciona('autenticar.php');
-            
-        }
-    }
-
+require '../config.php';
+require '../src/redireciona.php';
+require './Autentifica.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,11 +18,12 @@
     <link rel="stylesheet" href="../style.css">
     <title>Autentificação</title>
 </head>
+
 <body>
     <header>
-        <div class = "logo-container">
+        <div class="logo-container">
             <a href="../index.php">
-            <h1><img src="../img/logo-firstweb.png"></h1>
+                <h1><img src="../img/logo-firstweb.png"></h1>
             </a>
             <h2>FirstWEB</h2>
             <nav>
@@ -62,4 +51,26 @@
         </div>
     </main>
 </body>
+
 </html>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $aut = new Autentifica($mysql);
+    if ($aut->autentificar($_POST['login'], $_POST['senha']))
+        redireciona('../admin/index.php');
+    else {
+        echo "<script> 
+        Swal.fire({
+            text: 'Senha Incorreta!',
+            icon: 'error',
+            showCancelButton: true,
+            cancelButtonText:'Tentar Novamente',
+            cancelButtonColor: '#ff4040',
+            showConfirmButton: false
+          })
+          </script>";
+    }
+}
+?>
